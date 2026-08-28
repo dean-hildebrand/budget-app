@@ -24,6 +24,30 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header class="app-header">
+      <div class="app-header__inner">
+        <%= link_to root_path, class: "app-brand" do %>
+          <span class="app-brand__mark">$</span>
+          <span>Saving Dollars</span>
+        <% end %>
+
+        <nav class="app-nav">
+          <%= link_to "Budgets", budgets_path, class: "app-nav__link" %>
+          <%= link_to "New budget", new_budget_path, class: "btn btn--primary btn--sm" %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <% if notice.present? %>
+        <p class="flash flash--notice"><%= notice %></p>
+      <% end %>
+
+      <% if alert.present? %>
+        <p class="flash flash--alert"><%= alert %></p>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

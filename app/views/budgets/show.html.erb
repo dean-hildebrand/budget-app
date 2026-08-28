@@ -1,56 +1,87 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "#{@budget.formatted_month} Budget" %>
 
-<header>
-  <%= link_to "Back to budgets", budgets_path %>
+<%= link_to "← Back to budgets", budgets_path, class: "back-link" %>
 
+<div class="page-header">
   <h1><%= @budget.formatted_month %> Budget</h1>
-  
-  <%= link_to "Edit this budget", edit_budget_path(@budget) %>
 
-  <%= button_to "Destroy this budget", @budget, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
-</header>
+  <div class="page-header__actions">
+    <%= link_to "Add transaction", new_budget_transaction_path(@budget), class: "btn btn--primary" %>
+    <%= link_to "Edit budget", edit_budget_path(@budget), class: "btn btn--secondary" %>
+    <%= button_to "Delete budget", @budget,
+          method: :delete,
+          class: "btn btn--danger",
+          form_class: "button-to",
+          data: { turbo_confirm: "Are you sure? This deletes the budget and its transactions." } %>
+  </div>
+</div>
 
-<%= link_to "Add a new transaction", new_budget_transaction_path(@budget) %>
+<% balance = @budget.remaining_balance %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Amount</th>
-      <th>Due Date</th>
-      <th>Type</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @budget.transactions.each do |transaction| %>
-      <tr>
-        <td><%= transaction.name.capitalize %></td>
-        <td><%= number_to_currency(transaction.amount) %></td>
-        <td><%= transaction.formatted_due_date %></td>
-        <td><%= transaction.transaction_type.capitalize %></td>
-        <td>
-          <%= link_to "Edit", edit_budget_transaction_path(@budget, transaction) %> |
-          <%= button_to "Destroy", budget_transaction_path(@budget, transaction), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="stat-card__label">Total income</span>
+    <span class="stat-card__value numeric amount--income"><%= number_to_currency(@budget.total_income) %></span>
+  </div>
 
-  <tfoot>
-    <tr>
-      <th colspan="4">Total Income</th>
-        <td><%= number_to_currency(@budget.total_income) %></td>
-    </tr>
+  <div class="stat-card">
+    <span class="stat-card__label">Total expenses</span>
+    <span class="stat-card__value numeric amount--expense"><%= number_to_currency(@budget.total_expenses) %></span>
+  </div>
 
-    <tr>
-      <th colspan="4">Total Expenses</th>
-        <td><%= number_to_currency(@budget.total_expenses) %></td>
-    </tr>
+  <div class="stat-card">
+    <span class="stat-card__label">Remaining balance</span>
+    <span class="stat-card__value numeric <%= balance.negative? ? "amount--expense" : "amount--balance" %>">
+      <%= number_to_currency(balance) %>
+    </span>
+  </div>
+</div>
 
-    <tr>
-      <th colspan="4">Total Balance</th>
-        <td><%= number_to_currency(@budget.remaining_balance) %></td>
-    </tr>
-  </tfoot>
-</table>
+<% if @budget.transactions.any? %>
+  <div class="table-card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th class="table__amount">Amount</th>
+          <th>Due date</th>
+          <th>Type</th>
+          <th class="table__actions">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @budget.transactions.each do |transaction| %>
+          <tr id="<%= dom_id transaction %>">
+            <td class="table__name"><%= transaction.name.capitalize %></td>
+            <td class="table__amount numeric amount--<%= transaction.transaction_type %>">
+              <%= transaction.expense? ? "−" : "+" %><%= number_to_currency(transaction.amount) %>
+            </td>
+            <td><%= transaction.formatted_due_date %></td>
+            <td>
+              <span class="badge badge--<%= transaction.transaction_type %>">
+                <%= transaction.transaction_type.capitalize %>
+              </span>
+            </td>
+            <td class="table__actions">
+              <div class="actions actions--end">
+                <%= link_to "Edit", edit_budget_transaction_path(@budget, transaction), class: "btn btn--ghost btn--sm" %>
+                <%= button_to "Delete", budget_transaction_path(@budget, transaction),
+                      method: :delete,
+                      class: "btn btn--danger btn--sm",
+                      form_class: "button-to",
+                      data: { turbo_confirm: "Are you sure?" } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <h2 class="empty-state__title">Nothing budgeted yet</h2>
+    <p class="empty-state__text">Add your income and expenses for <%= @budget.formatted_month %> to see where the month lands.</p>
+    <%= link_to "Add a transaction", new_budget_transaction_path(@budget), class: "btn btn--primary" %>
+  </div>
+<% end %>

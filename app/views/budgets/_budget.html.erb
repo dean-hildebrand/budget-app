@@ -1,3 +1,14 @@
 <li id="<%= dom_id budget %>">
-  <%= link_to budget.formatted_month, budget %>
+  <%= link_to budget, class: "budget-card" do %>
+    <span class="budget-card__month"><%= budget.formatted_month %></span>
+
+    <% balance = budget.remaining_balance %>
+    <span class="budget-card__balance numeric <%= balance.negative? ? "amount--expense" : "amount--balance" %>">
+      <%= number_to_currency(balance) %>
+    </span>
+
+    <span class="budget-card__meta">
+      remaining &middot; <%= pluralize(budget.transactions.size, "transaction") %>
+    </span>
+  <% end %>
 </li>

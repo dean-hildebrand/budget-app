@@ -1,12 +1,16 @@
 <% content_for :title, "Editing budget" %>
 
-<h1>Editing budget</h1>
+<%= link_to "← Back to budget", @budget, class: "back-link" %>
+
+<div class="page-header">
+  <div>
+    <span class="page-header__eyebrow"><%= @budget.formatted_month %></span>
+    <h1>Edit budget</h1>
+  </div>
+
+  <div class="page-header__actions">
+    <%= link_to "All budgets", budgets_path, class: "btn btn--secondary" %>
+  </div>
+</div>
 
 <%= render "form", budget: @budget %>
-
-<br>
-
-<div>
-  <%= link_to "Show this budget", @budget %> |
-  <%= link_to "Back to budgets", budgets_path %>
-</div>

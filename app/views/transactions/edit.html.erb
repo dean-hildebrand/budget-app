@@ -1,5 +1,12 @@
 <% content_for :title, "Editing transaction" %>
 
-<h1>Editing transaction</h1>
+<%= link_to "← Back to budget", @budget, class: "back-link" %>
+
+<div class="page-header">
+  <div>
+    <span class="page-header__eyebrow"><%= @budget.formatted_month %></span>
+    <h1>Edit transaction</h1>
+  </div>
+</div>
 
 <%= render "form", budget: @budget, transaction: @transaction %>

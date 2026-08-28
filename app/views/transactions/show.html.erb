@@ -1,10 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<%# Not routed: config/routes.rb nests transactions and excludes :show. %>
+<%= link_to "← Back to budget", @transaction.budget, class: "back-link" %>
 
 <%= render @transaction %>
 
-<div>
-  <%= link_to "Edit this transaction", edit_transaction_path(@transaction) %> |
-  <%= link_to "Back to transactions", transactions_path %>
-
-  <%= button_to "Destroy this transaction", @transaction, method: :delete %>
+<div class="actions actions--spaced">
+  <%= link_to "Edit", edit_budget_transaction_path(@transaction.budget, @transaction), class: "btn btn--secondary" %>
+  <%= button_to "Delete", budget_transaction_path(@transaction.budget, @transaction),
+        method: :delete,
+        class: "btn btn--danger",
+        form_class: "button-to",
+        data: { turbo_confirm: "Are you sure?" } %>
 </div>

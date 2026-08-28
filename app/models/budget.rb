@@ -5,12 +5,14 @@ class Budget < ApplicationRecord
     month.strftime("%B %Y")
   end
 
+  # Summed in Ruby so an eager-loaded association (see BudgetsController#index)
+  # is reused instead of firing a query per budget.
   def total_income
-    transactions.income.sum(:amount)
+    transactions.select(&:income?).sum { |t| t.amount || 0 }
   end
 
   def total_expenses
-    transactions.expense.sum(:amount)
+    transactions.select(&:expense?).sum { |t| t.amount || 0 }
   end
 
   def remaining_balance

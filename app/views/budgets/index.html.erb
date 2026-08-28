@@ -1,13 +1,20 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Budgets" %>
 
-<header>
-  <h1>Budgets</h1>
+<div class="page-header">
+  <div>
+    <span class="page-header__eyebrow">Overview</span>
+    <h1>Budgets</h1>
+  </div>
+</div>
 
-  <%= link_to "New budget", new_budget_path %>
-</header>
-
-<ul id="budgets">
+<% if @budgets.any? %>
+  <ul id="budgets" class="card-grid">
     <%= render @budgets %>
-</ul>
+  </ul>
+<% else %>
+  <div class="empty-state">
+    <h2 class="empty-state__title">No budgets yet</h2>
+    <p class="empty-state__text">Start a budget for a month, then add the income and expenses you expect.</p>
+    <%= link_to "Create your first budget", new_budget_path, class: "btn btn--primary" %>
+  </div>
+<% end %>

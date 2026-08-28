@@ -1,22 +1,12 @@
-<div id="<%= dom_id transaction %>">
-  <div>
-    <strong>Budget:</strong>
-    <%= transaction.budget_id %>
-  </div>
+<div id="<%= dom_id transaction %>" class="card card__body">
+  <h2><%= transaction.name.capitalize %></h2>
 
-  <div>
-    <strong>Name:</strong>
-    <%= transaction.name %>
-  </div>
+  <p class="stat-card__value numeric amount--<%= transaction.transaction_type %>">
+    <%= transaction.expense? ? "−" : "+" %><%= number_to_currency(transaction.amount) %>
+  </p>
 
-  <div>
-    <strong>Amount:</strong>
-    <%= transaction.amount %>
-  </div>
-
-  <div>
-    <strong>Due date:</strong>
-    <%= transaction.due_date %>
-  </div>
-
+  <p class="form-hint">
+    <span class="badge badge--<%= transaction.transaction_type %>"><%= transaction.transaction_type.capitalize %></span>
+    Due <%= transaction.formatted_due_date %>
+  </p>
 </div>

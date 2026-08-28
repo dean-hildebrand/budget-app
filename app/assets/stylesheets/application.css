@@ -1,10 +1,131 @@
 /*
- * This is a manifest file that'll be compiled into application.css.
+ * Design tokens, reset and base typography.
  *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
+ * Propshaft's `stylesheet_link_tag :app` includes every CSS file under
+ * app/assets/**\/*.css in alphabetical order, so this file (tokens + base)
+ * is loaded before components.css.
  */
+
+:root {
+  /* Neutrals */
+  --bg: #f7f9fc;
+  --surface: #ffffff;
+  --surface-sunken: #f4f7fb;
+  --border: #e8edf5;
+  --border-strong: #d6deea;
+  --text: #1e293b;
+  --text-muted: #6b7a90;
+
+  /* Brand + money semantics */
+  --brand: #4f46e5;
+  --brand-hover: #4338ca;
+  --brand-soft: #e0e7ff;
+  --on-brand: #ffffff;
+
+  --income: #16a34a;
+  --income-soft: #dcfce7;
+  --expense: #dc2626;
+  --expense-soft: #fee2e2;
+  --balance: #4f46e5;
+
+  --danger: #dc2626;
+  --focus: #6366f1;
+
+  /* Shape + depth */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 24px -12px rgba(15, 23, 42, 0.18);
+
+  /* Rhythm */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111827;
+    --surface: #1b2436;
+    --surface-sunken: #232e44;
+    --border: #303c54;
+    --border-strong: #44536e;
+    --text: #e8eef8;
+    --text-muted: #9fb0c7;
+
+    --brand: #818cf8;
+    --brand-hover: #a5b4fc;
+    --brand-soft: #2c3163;
+    --on-brand: #0b1020;
+
+    --income: #4ade80;
+    --income-soft: #16351f;
+    --expense: #f87171;
+    --expense-soft: #3d1e21;
+    --balance: #a5b4fc;
+
+    --danger: #f87171;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 650;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.25rem; }
+h3 { font-size: 1rem; }
+
+p { margin: 0 0 var(--space-4); }
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Money and other figures line up column-wise. */
+.numeric {
+  font-variant-numeric: tabular-nums;
+}
