@@ -466,6 +466,32 @@
   font-size: 0.9rem;
 }
 
+/* ----------------------------------------------------------------- Popover */
+
+/*
+ * A popover and the button that invokes it share an *implicit* anchor
+ * reference, so no `anchor-name` is needed. But a popover only uses that
+ * reference when `position-anchor` opts in: its initial value is `normal`,
+ * which leaves `anchor()` with nothing to resolve against, so every inset
+ * falls back to `auto` and the panel lands in the top-left corner.
+ * `position-anchor: auto` is what points it at its invoker.
+ *
+ * `inset` and `margin` are reset because the UA stylesheet centres popovers
+ * with `inset: 0; margin: auto`, which would otherwise fight these insets.
+ */
+.popover {
+  position-anchor: auto;
+  inset: auto;
+  margin: 0;
+  top: anchor(bottom);
+  right: anchor(right);
+  margin-top: var(--space-2);
+  box-shadow: var(--shadow);
+
+  /* Flip above the button when there is no room below it. */
+  position-try-fallbacks: flip-block;
+}
+
 /* ------------------------------------------------------------ Empty states */
 
 .empty-state {

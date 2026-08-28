@@ -1,4 +1,10 @@
-<%= form_with(model: budget, class: "card card--form") do |form| %>
+<%# Pass `popover: true` to render this form as an anchored popover panel. %>
+<% popover = local_assigns.fetch(:popover, false) %>
+
+<%= form_with(model: budget,
+      id: dom_id(budget),
+      class: class_names("card", "card--form", "popover" => popover),
+      html: popover ? { popover: "auto" } : {}) do |form| %>
   <% if budget.errors.any? %>
     <div class="form-errors">
       <h2 class="form-errors__title"><%= pluralize(budget.errors.count, "error") %> prohibited this budget from being saved:</h2>
@@ -21,5 +27,8 @@
 
   <div class="form-actions">
     <%= form.submit class: "btn btn--primary" %>
+    <% if popover %>
+      <button type="button" commandfor="<%= dom_id(budget) %>" command="hide-popover" class="btn btn--ghost">Cancel</button>
+    <% end %>
   </div>
 <% end %>

@@ -6,8 +6,11 @@
   <h1><%= @budget.formatted_month %> Budget</h1>
 
   <div class="page-header__actions">
-    <%= link_to "Add transaction", new_budget_transaction_path(@budget), class: "btn btn--primary" %>
-    <%= link_to "Edit budget", edit_budget_path(@budget), class: "btn btn--secondary" %>
+    <button type="button" commandfor="new_transaction" command="toggle-popover" class="btn btn--primary">Add transaction</button>
+    <%= render "transactions/form", budget: @budget, transaction: Transaction.new, popover: true %>
+
+    <button type="button" commandfor="<%= dom_id(@budget) %>" command="toggle-popover" class="btn btn--secondary">Edit budget</button>
+    <%= render "form", budget: @budget, popover: true %>
     <%= button_to "Delete budget", @budget,
           method: :delete,
           class: "btn btn--danger",
@@ -55,7 +58,7 @@
           <tr id="<%= dom_id transaction %>">
             <td class="table__name"><%= transaction.name.capitalize %></td>
             <td class="table__amount numeric amount--<%= transaction.transaction_type %>">
-              <%= transaction.expense? ? "−" : "+" %><%= number_to_currency(transaction.amount) %>
+              <%= transaction.expense? ? "-" : "+" %><%= number_to_currency(transaction.amount) %>
             </td>
             <td><%= transaction.formatted_due_date %></td>
             <td>
@@ -82,6 +85,6 @@
   <div class="empty-state">
     <h2 class="empty-state__title">Nothing budgeted yet</h2>
     <p class="empty-state__text">Add your income and expenses for <%= @budget.formatted_month %> to see where the month lands.</p>
-    <%= link_to "Add a transaction", new_budget_transaction_path(@budget), class: "btn btn--primary" %>
+    <button type="button" commandfor="new_transaction" command="toggle-popover" class="btn btn--primary">Add a transaction</button>
   </div>
 <% end %>
