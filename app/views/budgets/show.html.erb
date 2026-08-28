@@ -5,7 +5,7 @@
 
   <h1><%= @budget.formatted_month %> Budget</h1>
   
-  <%= link_to "Edit this budget", edit_budget_path(@budget) %> |
+  <%= link_to "Edit this budget", edit_budget_path(@budget) %>
 
   <%= button_to "Destroy this budget", @budget, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
 </header>
@@ -35,4 +35,22 @@
         </td>
       </tr>
     <% end %>
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <th colspan="4">Total Income</th>
+        <td><%= number_to_currency(@budget.total_income) %></td>
+    </tr>
+
+    <tr>
+      <th colspan="4">Total Expenses</th>
+        <td><%= number_to_currency(@budget.total_expenses) %></td>
+    </tr>
+
+    <tr>
+      <th colspan="4">Total Balance</th>
+        <td><%= number_to_currency(@budget.remaining_balance) %></td>
+    </tr>
+  </tfoot>
 </table>
