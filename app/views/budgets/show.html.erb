@@ -1,13 +1,15 @@
 <% content_for :title, "#{@budget.formatted_month} Budget" %>
 
+<% new_transaction = Transaction.new %>
+
 <%= link_to "← Back to budgets", budgets_path, class: "back-link" %>
 
 <div class="page-header">
   <h1><%= @budget.formatted_month %> Budget</h1>
 
   <div class="page-header__actions">
-    <button type="button" commandfor="new_transaction" command="toggle-popover" class="btn btn--primary">Add transaction</button>
-    <%= render "transactions/form", budget: @budget, transaction: Transaction.new, popover: true %>
+    <button type="button" commandfor="<%= dom_id(new_transaction, :popover) %>" command="toggle-popover" class="btn btn--primary">Add transaction</button>
+    <%= render "transactions/form", budget: @budget, transaction: new_transaction, popover: true %>
 
     <button type="button" commandfor="<%= dom_id(@budget) %>" command="toggle-popover" class="btn btn--secondary">Edit budget</button>
     <%= render "form", budget: @budget, popover: true %>
@@ -68,7 +70,9 @@
             </td>
             <td class="table__actions">
               <div class="actions actions--end">
-                <%= link_to "Edit", edit_budget_transaction_path(@budget, transaction), class: "btn btn--ghost btn--sm" %>
+                <button type="button" commandfor="<%= dom_id(transaction, :popover) %>" command="toggle-popover" class="btn btn--ghost btn--sm">Edit</button>
+                <%= render "transactions/form", budget: @budget, transaction: transaction, popover: true %>
+
                 <%= button_to "Delete", budget_transaction_path(@budget, transaction),
                       method: :delete,
                       class: "btn btn--danger btn--sm",
@@ -85,6 +89,6 @@
   <div class="empty-state">
     <h2 class="empty-state__title">Nothing budgeted yet</h2>
     <p class="empty-state__text">Add your income and expenses for <%= @budget.formatted_month %> to see where the month lands.</p>
-    <button type="button" commandfor="new_transaction" command="toggle-popover" class="btn btn--primary">Add a transaction</button>
+    <button type="button" commandfor="<%= dom_id(new_transaction, :popover) %>" command="toggle-popover" class="btn btn--primary">Add a transaction</button>
   </div>
 <% end %>

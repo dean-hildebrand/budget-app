@@ -1,8 +1,9 @@
 <%# Pass `popover: true` to render this form as an anchored popover panel. %>
 <% popover = local_assigns.fetch(:popover, false) %>
+<% form_id = popover ? dom_id(transaction, :popover) : dom_id(transaction) %>
 
 <%= form_with(model: [ budget, transaction ],
-              id: dom_id(transaction),
+              id: form_id,
               class: class_names("card", "card--form", "popover" => popover),
               html: popover ? { popover: "auto" } : {}) do |form| %>
   <% if transaction.errors.any? %>
@@ -40,7 +41,7 @@
   <div class="form-actions">
     <%= form.submit class: "btn btn--primary" %>
     <% if popover %>
-      <button type="button" commandfor="<%= dom_id(transaction) %>" command="hide-popover" class="btn btn--ghost">Cancel</button>
+      <button type="button" commandfor="<%= form_id %>" command="hide-popover" class="btn btn--ghost">Cancel</button>
     <% else %>
       <%= link_to "Cancel", budget, class: "btn btn--ghost" %>
     <% end %>
