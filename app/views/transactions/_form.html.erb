@@ -38,6 +38,11 @@
     <%= form.select :transaction_type, Transaction.types_for_select, {}, class: "form-select" %>
   </div>
 
+  <div class="form-field form-field--inline">
+    <%= form.label :recurring, "Recurring", class: "form-label" %>
+    <%= form.checkbox :recurring, class: "form-checkbox" %>
+  </div>
+
   <div class="form-actions">
     <%= form.submit class: "btn btn--primary" %>
     <% if popover %>

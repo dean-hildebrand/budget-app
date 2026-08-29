@@ -3,6 +3,8 @@ class Transaction < ApplicationRecord
 
   enum :transaction_type, [ :income, :expense ]
 
+  scope :recurring, -> { where(recurring: true) }
+
   def self.types_for_select
     transaction_types.keys.map { |type| [ type.titleize, type ] }
   end
