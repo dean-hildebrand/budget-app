@@ -3,6 +3,7 @@ require "test_helper"
 class BudgetsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @budget = budgets(:one)
+    sign_in_as users(:one)
   end
 
   test "should get index" do
@@ -43,6 +44,11 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
       delete budget_url(@budget)
     end
 
+    assert_redirected_to budgets_url
+  end
+
+  test "should not show another user's budget" do
+    get budget_url(budgets(:two))
     assert_redirected_to budgets_url
   end
 end

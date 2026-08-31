@@ -3,6 +3,8 @@ class Transaction < ApplicationRecord
 
   enum :transaction_type, [ :income, :expense ]
 
+  validates :transaction_type, presence: true
+
   scope :recurring, -> { where(recurring: true) }
 
   def self.types_for_select

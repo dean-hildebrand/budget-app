@@ -5,9 +5,13 @@ one:
   name: MyString
   amount: 9.99
   due_date: 2026-05-11
+  transaction_type: expense
+  recurring: false
 
 two:
   budget: two
   name: MyString
   amount: 9.99
   due_date: 2026-05-11
+  transaction_type: income
+  recurring: true
