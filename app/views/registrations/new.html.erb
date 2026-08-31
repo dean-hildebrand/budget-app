@@ -1,0 +1,41 @@
+<% content_for :title, "Sign in" %>
+
+<div class="auth">
+  <div class="card card--form auth__card">
+    <div class="auth__header">
+      <h1 class="auth__title">Sign Up</h1>
+    </div>
+
+    <%= form_with model: @user, url: registrations_path do |form| %>
+      <% if form.object.errors.any? %>
+        <div class="form-errors">
+          <h2 class="form-errors__title"><%= pluralize(form.object.errors.count, "error") %> prohibited this: Please try again</h2>
+
+          <ul class="form-errors__list">
+            <% form.object.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-field">
+        <%= form.label :email_address, "Email address", class: "form-label" %>
+        <%= form.email_field :email_address, required: true, autofocus: true,
+              class: "form-input", placeholder: "you@example.com"  %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :password, class: "form-label" %>
+        <%= form.password_field :password, required: true,
+              class: "form-input", placeholder: "Enter your password", maxlength: 72 %>
+      </div>
+
+      <div class="form-actions form-actions--stacked">
+        <%= form.submit "Sign in", class: "btn btn--primary" %>
+      </div>
+    <% end %>
+
+    <p class="auth__footer"><%= link_to "Forgot password?", new_password_path %></p>
+  </div>
+</div>

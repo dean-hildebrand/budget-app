@@ -33,9 +33,12 @@
         <% end %>
 
         <nav class="app-nav">
-          <% unless Current.user.nil? %>
+          <% if authenticated? %>
             <%= link_to "Budgets", budgets_path, class: "app-nav__link" %>
             <%= link_to "New budget", new_budget_path, class: "btn btn--primary btn--sm" %>
+            <%= button_to 'Logout', session_path, method: :delete, class: "btn btn--warning btn--sm" %>
+            <% else %>
+            <%= link_to "Sign Up", new_registration_path, class: "btn btn-primary" %>
           <% end%>
         </nav>
       </div>

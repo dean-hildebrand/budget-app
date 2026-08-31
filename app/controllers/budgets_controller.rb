@@ -3,7 +3,6 @@ class BudgetsController < ApplicationController
 
   # GET /budgets or /budgets.json
   def index
-    # @budgets = Budget.includes(:transactions).order(month: :desc)
     @budgets = Current.user.budgets.includes(:transactions).order(month: :desc)
   end
 

@@ -4,4 +4,5 @@ class User < ApplicationRecord
   has_many :budgets, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+  validates :password, length: { minimum: 8 }, on: :create
 end
