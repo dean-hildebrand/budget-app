@@ -8,6 +8,7 @@ class BudgetsController < ApplicationController
 
   # GET /budgets/1 or /budgets/1.json
   def show
+    @categories = Transaction.categories_for(Current.user)
   end
 
   # GET /budgets/new

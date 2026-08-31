@@ -9,7 +9,7 @@
 
   <div class="page-header__actions">
     <button type="button" commandfor="<%= dom_id(new_transaction, :popover) %>" command="toggle-popover" class="btn btn--primary">Add transaction</button>
-    <%= render "transactions/form", budget: @budget, transaction: new_transaction, popover: true %>
+    <%= render "transactions/form", budget: @budget, transaction: new_transaction, category: @categories, popover: true %>
 
     <button type="button" commandfor="<%= dom_id(@budget) %>" command="toggle-popover" class="btn btn--secondary">Edit budget</button>
     <%= render "form", budget: @budget, popover: true %>
@@ -51,6 +51,7 @@
           <th class="table__amount">Amount</th>
           <th>Due date</th>
           <th>Type</th>
+          <th>Category</th>
           <th class="table__actions">Actions</th>
         </tr>
       </thead>
@@ -68,10 +69,13 @@
                 <%= transaction.transaction_type.capitalize %>
               </span>
             </td>
+            <td>
+              <%= transaction.category || "-" %>
+            </td>
             <td class="table__actions">
               <div class="actions actions--end">
                 <button type="button" commandfor="<%= dom_id(transaction, :popover) %>" command="toggle-popover" class="btn btn--ghost btn--sm">Edit</button>
-                <%= render "transactions/form", budget: @budget, transaction: transaction, popover: true %>
+                <%= render "transactions/form", budget: @budget, transaction: transaction, category: @categories, popover: true %>
 
                 <%= button_to "Delete", budget_transaction_path(@budget, transaction),
                       method: :delete,

@@ -35,7 +35,17 @@
 
   <div class="form-field">
     <%= form.label :transaction_type, "Type", class: "form-label" %>
-    <%= form.select :transaction_type, Transaction.types_for_select, {}, class: "form-select" %>
+    <%= form.select :transaction_type, Transaction.types_for_select, {}, class: "form-input" %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :category, class: "form-label" %>
+    <%= form.text_field :category, list: "categories_#{dom_id(transaction)}", class: "form-input" %>
+    <datalist id="categories_<%= dom_id(transaction)%>">
+      <% @categories.each do |category|%>
+        <option value="<%= category %>">
+      <% end%>
+    </datalist>
   </div>
 
   <div class="form-field form-field--inline">
