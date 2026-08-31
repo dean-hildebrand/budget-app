@@ -571,27 +571,37 @@
 /* ----------------------------------------------------------------- Popover */
 
 /*
- * A popover and the button that invokes it share an *implicit* anchor
- * reference, so no `anchor-name` is needed. But a popover only uses that
- * reference when `position-anchor` opts in: its initial value is `normal`,
- * which leaves `anchor()` with nothing to resolve against, so every inset
- * falls back to `auto` and the panel lands in the top-left corner.
- * `position-anchor: auto` is what points it at its invoker.
+ * These panels hold a full form, so they are centred rather than anchored to
+ * the button that opened them. Anchoring cannot fit a form this tall next to a
+ * row in the middle of a long table: there is room for it neither below the
+ * button nor above, and a popover is in the top layer, so the part that runs
+ * past the viewport cannot be scrolled into view.
  *
- * `inset` and `margin` are reset because the UA stylesheet centres popovers
- * with `inset: 0; margin: auto`, which would otherwise fight these insets.
+ * The UA stylesheet already centres a popover with `inset: 0; margin: auto`.
+ * All this adds is a ceiling, so a tall form scrolls inside the panel.
  */
 .popover {
-  position-anchor: auto;
-  inset: auto;
-  margin: 0;
-  top: anchor(bottom);
-  right: anchor(right);
-  margin-top: var(--space-2);
+  max-block-size: calc(100dvh - var(--space-6));
+  max-inline-size: calc(100vw - var(--space-6));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   box-shadow: var(--shadow);
+}
 
-  /* Flip above the button when there is no room below it. */
-  position-try-fallbacks: flip-block;
+/*
+ * Keep the actions reachable without scrolling to the bottom of the form. The
+ * negative offsets cancel `.card--form`'s padding so the bar sits flush.
+ */
+.popover .form-actions {
+  position: sticky;
+  bottom: calc(-1 * var(--space-5));
+  margin-block: 0 calc(-1 * var(--space-5));
+  padding-block: var(--space-5);
+  background-color: var(--surface);
+}
+
+.popover::backdrop {
+  background-color: rgb(15 23 42 / 0.45);
 }
 
 /* ------------------------------------------------------------ Empty states */
