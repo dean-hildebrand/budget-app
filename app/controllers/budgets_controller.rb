@@ -3,7 +3,8 @@ class BudgetsController < ApplicationController
 
   # GET /budgets or /budgets.json
   def index
-    @budgets = Budget.includes(:transactions).order(month: :desc)
+    # @budgets = Budget.includes(:transactions).order(month: :desc)
+    @budgets = Current.user.budgets.includes(:transactions).order(month: :desc)
   end
 
   # GET /budgets/1 or /budgets/1.json
@@ -21,7 +22,7 @@ class BudgetsController < ApplicationController
 
   # POST /budgets or /budgets.json
   def create
-    @budget = Budget.new(budget_params)
+    @budget = Current.user.budgets.new(budget_params)
 
     respond_to do |format|
       if @budget.save
@@ -60,7 +61,7 @@ class BudgetsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_budget
-      @budget = Budget.find(params.expect(:id))
+      @budget = Current.user.budgets.find(params.expect(:id))
     rescue ActiveRecord::RecordNotFound
       redirect_to budgets_path
     end

@@ -1,5 +1,6 @@
 class Budget < ApplicationRecord
   has_many :transactions, dependent: :destroy
+  belongs_to :user
 
   def formatted_month
     month.strftime("%B %Y")

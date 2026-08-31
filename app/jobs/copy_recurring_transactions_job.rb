@@ -2,18 +2,21 @@ class CopyRecurringTransactionsJob < ApplicationJob
   queue_as :default
 
   def perform
-    previous_budget = Budget.where("month < ?", Date.current.beginning_of_month).order(month: :desc).first
-    nil unless previous_budget
+    User.find_each do |user|
+      previous_budget = user.budgets.where("month < ?", Date.current.beginning_of_month).order(month: :desc).first
+      nil unless previous_budget
 
-    current_budget = Budget.find_or_create_by(month: Date.current.beginning_of_month)
-    previous_budget.transactions.recurring.each do |transaction|
-      current_budget.transactions.create!(
-        name: transaction.name,
-        amount: transaction.amount,
-        due_date: transaction.due_date + 1.month,
-        transaction_type: transaction.transaction_type,
-        recurring: true
-      )
+      current_budget = user.budgets.find_or_create_by(month: Date.current.beginning_of_month)
+
+      previous_budget.transactions.recurring.each do |transaction|
+        current_budget.transactions.create!(
+          name: transaction.name,
+          amount: transaction.amount,
+          due_date: transaction.due_date + 1.month,
+          transaction_type: transaction.transaction_type,
+          recurring: true
+        )
+      end
     end
   end
 end

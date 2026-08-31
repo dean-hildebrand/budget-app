@@ -33,8 +33,10 @@
         <% end %>
 
         <nav class="app-nav">
-          <%= link_to "Budgets", budgets_path, class: "app-nav__link" %>
-          <%= link_to "New budget", new_budget_path, class: "btn btn--primary btn--sm" %>
+          <% unless Current.user.nil? %>
+            <%= link_to "Budgets", budgets_path, class: "app-nav__link" %>
+            <%= link_to "New budget", new_budget_path, class: "btn btn--primary btn--sm" %>
+          <% end%>
         </nav>
       </div>
     </header>
