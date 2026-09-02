@@ -52,7 +52,7 @@ class TransactionsController < ApplicationController
   private
 
   def set_budget
-    @budget = Budget.find(params.expect(:budget_id))
+    @budget = Current.user.budgets.find(params.expect(:budget_id))
   rescue ActiveRecord::RecordNotFound
     redirect_to budgets_path
   end
