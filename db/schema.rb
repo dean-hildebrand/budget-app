@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_02_085236) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_02_110521) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_085236) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "tool_invocations", force: :cascade do |t|
+    t.bigint "chat_message_id", null: false
+    t.datetime "created_at", null: false
+    t.jsonb "input", default: {}, null: false
+    t.string "name", null: false
+    t.jsonb "result"
+    t.integer "status", default: 0, null: false
+    t.string "tool_use_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_message_id"], name: "index_tool_invocations_on_chat_message_id"
+    t.index ["tool_use_id"], name: "index_tool_invocations_on_tool_use_id", unique: true
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.decimal "amount", precision: 10, scale: 2
     t.bigint "budget_id", null: false
@@ -73,5 +86,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_085236) do
   add_foreign_key "chat_messages", "chats"
   add_foreign_key "chats", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tool_invocations", "chat_messages"
   add_foreign_key "transactions", "budgets"
 end
